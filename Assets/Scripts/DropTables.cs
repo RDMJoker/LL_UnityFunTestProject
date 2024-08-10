@@ -1,6 +1,7 @@
 using System.Collections.Generic;
+using UnityEngine;
 
-public class DropTables : Item
+public class DropTables : MonoBehaviour
 {
     readonly List<int> defaultList = new();
     protected bool isAlreadyOpen = false;

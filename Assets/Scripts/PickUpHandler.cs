@@ -1,34 +1,34 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PickUpHandler : MonoBehaviour
 {
     public readonly List<int> PickedUpKeys = new();
-    GameObject touchedObject;
-    readonly List<GameObject> touchedObjects = new();
+    DropTables touchedObject;
+    readonly List<DropTables> touchedObjects = new();
     public delegate void PickedUpUIChange(int _keyID);
-
     public event PickedUpUIChange OnKeyPickup;
 
     void OnCollisionEnter2D(Collision2D _collidingObject)
     {
-        if (_collidingObject.gameObject.GetComponent<Item>() && !_collidingObject.gameObject.GetComponent<DropTables>())
+        if (_collidingObject.gameObject.TryGetComponent(out Item item))
         {
-            _collidingObject.gameObject.GetComponent<Item>().OnPickup(gameObject);
+            item.OnPickup(gameObject);
             Destroy(_collidingObject.gameObject);
         }
-        else if (_collidingObject.gameObject.GetComponent<DropTables>())
+        else if (_collidingObject.gameObject.TryGetComponent(out DropTables table))
         {
-            touchedObject = _collidingObject.gameObject;
+            touchedObject = table;
             touchedObjects.Add(touchedObject);
             GetComponent<PlayerMovementTopDown>().SetNearInventory(true);
         }
     }
     void OnCollisionExit2D(Collision2D _collidingObject)
     {
-        if (!_collidingObject.gameObject.GetComponent<DropTables>()) return;
+        if (!_collidingObject.gameObject.TryGetComponent(out DropTables table)) return;
         GetComponent<PlayerMovementTopDown>().SetNearInventory(false);
-        touchedObjects.Remove(_collidingObject.gameObject);
+        touchedObjects.Remove(table);
     }
 
     public void GetKey(int _keyID)
@@ -40,10 +40,9 @@ public class PickUpHandler : MonoBehaviour
 
     public void LootInventory()
     {
-        foreach (var box in touchedObjects)
+        foreach (var box in touchedObjects.Where(_box => !_box.IsAlreadyOpen))
         {
-            if (!box.gameObject.TryGetComponent(out DropTables inventoryList) || inventoryList.IsAlreadyOpen) continue;
-            gameObject.GetComponent<PlayerInventory>().ReceiveItems(inventoryList.GetObjects());
+            gameObject.GetComponent<PlayerInventory>().ReceiveItems(box.GetObjects());
             break;
         }
     }
