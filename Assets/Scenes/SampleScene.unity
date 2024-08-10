@@ -769,7 +769,7 @@ GameObject:
   - component: {fileID: 510823118}
   m_Layer: 0
   m_Name: Player2
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -937,7 +937,7 @@ Transform:
   m_GameObject: {fileID: 510823109}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.38, y: -1.28, z: 0}
+  m_LocalPosition: {x: -2.38, y: 0.43, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -956,7 +956,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7da163aba7bd81b42939ad823fe27172, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moveSpeed: 2
+  moveSpeed: 2
 --- !u!114 &510823117
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1209,9 +1209,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c24dacd1efd2de48af29bd162c16295, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moveSpeed: 1
-  _distance: 1
-  _obstacles:
+  moveSpeed: 1
+  distance: 1
+  obstacles:
     serializedVersion: 2
     m_Bits: 72
 --- !u!1001 &805318518
@@ -1525,15 +1525,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 910feb91e5ea8ca4ba21e5ad06ec62ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _foodCount: {fileID: 275473895}
-  _endGameMessage: {fileID: 64065176}
-  _currentPlayerInventory: {fileID: 1570871689}
-  _pickUpHandler: {fileID: 1570871688}
-  _firstKey: {fileID: 1124839977}
-  _secondKey: {fileID: 1328079112}
-  _thirdKey: {fileID: 1784570759}
-  _defaultKeySprite: {fileID: -129412068, guid: 92410ac13570fbd408fb12c7cc956128, type: 3}
-  _endGame: {fileID: 1439229240}
+  foodCount: {fileID: 275473895}
+  endGameMessage: {fileID: 64065176}
+  currentPlayerInventory: {fileID: 1570871689}
+  pickUpHandler: {fileID: 1570871688}
+  firstKey: {fileID: 1124839977}
+  secondKey: {fileID: 1328079112}
+  thirdKey: {fileID: 1784570759}
+  defaultKeySprite: {fileID: -129412068, guid: 92410ac13570fbd408fb12c7cc956128, type: 3}
+  endGame: {fileID: 1439229240}
 --- !u!1 &1081987324
 GameObject:
   m_ObjectHideFlags: 0
@@ -2751,8 +2751,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: decc98ced916bfd4daa23603b7d367d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enemyClass: {fileID: 2085556628}
-  _enemyClass2: {fileID: 785796689}
+  enemyClass: {fileID: 2085556628}
+  enemyClass2: {fileID: 785796689}
 --- !u!61 &1439229241
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2782,7 +2782,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0.41637468, y: -0.4360144}
@@ -3024,7 +3024,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7da163aba7bd81b42939ad823fe27172, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moveSpeed: 2
+  moveSpeed: 2
 --- !u!114 &1570871688
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3627,8 +3627,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 854c8d67655163b4d9cb005d0dc8e759, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spriteStateOpen: {fileID: -1444671594, guid: 92410ac13570fbd408fb12c7cc956128, type: 3}
-  _spriteStateClosed: {fileID: 107375122, guid: 92410ac13570fbd408fb12c7cc956128, type: 3}
+  spriteStateOpen: {fileID: -1444671594, guid: 92410ac13570fbd408fb12c7cc956128, type: 3}
+  spriteStateClosed: {fileID: 107375122, guid: 92410ac13570fbd408fb12c7cc956128, type: 3}
 --- !u!61 &1959314146
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3719,9 +3719,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c24dacd1efd2de48af29bd162c16295, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _moveSpeed: 1
-  _distance: 1
-  _obstacles:
+  moveSpeed: 1
+  distance: 1
+  obstacles:
     serializedVersion: 2
     m_Bits: 72
 --- !u!50 &2085556629

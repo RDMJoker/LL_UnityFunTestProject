@@ -1,5 +1,8 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.U2D.Animation;
 
 public class Door : MonoBehaviour
@@ -8,25 +11,29 @@ public class Door : MonoBehaviour
     SpriteRenderer spriteRender;
     SpriteLibrary spriteLibrary;
     BoxCollider2D boxCollider;
-    [SerializeField][Min(1)] int _doorID = 1;
+    [FormerlySerializedAs("_doorID")] [SerializeField][Min(1)] int doorID = 1;
 
-    private void Awake()
+    void Awake()
     {
         spriteRender = GetComponent<SpriteRenderer>();
         spriteLibrary = GetComponent<SpriteLibrary>();
         boxCollider = GetComponent<BoxCollider2D>();
-
     }
 
-    public virtual void OpenDoor(List<int> _pickedUpKeys)
+    void OnCollisionEnter2D(Collision2D _other)
     {
-        foreach (int _keyID in _pickedUpKeys)
+        if (_other.gameObject.TryGetComponent(out PickUpHandler pickUpHandler))
         {
-            if (_keyID == _doorID)
-            {
-                boxCollider.enabled = false;
-                spriteRender.sprite = spriteLibrary.GetSprite("DoorState", "doorOpen");
-            }
+            OpenDoor(pickUpHandler.PickedUpKeys);
+        }
+    }
+
+    public void OpenDoor(List<int> _pickedUpKeys)
+    {
+        foreach (int keyID in _pickedUpKeys.Where(_keyID => _keyID == doorID))
+        {
+            boxCollider.enabled = false;
+            spriteRender.sprite = spriteLibrary.GetSprite("DoorState", "doorOpen");
         }
     }
 }

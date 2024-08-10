@@ -4,14 +4,10 @@ public class Item : MonoBehaviour
 {
     protected enum EItemCategories
     {
-        food = 1,
-        ammo = 2,
-        weapon = 3,
-        armor = 4,
-    };
-    public virtual void OnPickup()
-    {
-
+        Food = 1,
+        Ammo = 2,
+        Weapon = 3,
+        Armor = 4,
     }
     public virtual void OnPickup(GameObject _player)
     {

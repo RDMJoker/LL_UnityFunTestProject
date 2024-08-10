@@ -1,42 +1,46 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 public class PlayerMovementTopDown : MonoBehaviour
 {
-    Rigidbody2D rigdbody;
+    Rigidbody2D playerRigidbody;
     Vector2 moveInput;
-    private bool isNearInventory = false;
-    [SerializeField] private float _moveSpeed = 2;
-    private bool freezeMovement;
+    bool isNearInventory;
 
-    private void Awake()
+    [FormerlySerializedAs("_moveSpeed")] [SerializeField] float moveSpeed = 2;
+
+    bool freezeMovement;
+
+    void Awake()
     {
-        rigdbody = GetComponent<Rigidbody2D>();
+        playerRigidbody = GetComponent<Rigidbody2D>();
     }
-    private void FixedUpdate()
+
+    void FixedUpdate()
     {
         if (!freezeMovement)
         {
-        rigdbody.velocity = moveInput * _moveSpeed;
+            playerRigidbody.velocity = moveInput * moveSpeed;
         }
     }
 
-    private void OnWalk(InputValue _value)
+    void OnWalk(InputValue _value)
     {
         moveInput = _value.Get<Vector2>();
-
     }
-    private void OnInteract()
+
+    void OnInteract()
     {
         if (isNearInventory)
         {
-            this.GetComponent<PickUpHandler>().LootInventory();
+            GetComponent<PickUpHandler>().LootInventory();
         }
     }
 
-    private void OnEat()
+    void OnEat()
     {
-        if (!this.GetComponent<PlayerInventory>().EatFood())
+        if (!GetComponent<PlayerInventory>().EatFood())
         {
             Debug.Log("You have no food!");
         }
@@ -44,13 +48,13 @@ public class PlayerMovementTopDown : MonoBehaviour
 
     public void IncreaseMoveSpeed(float _value)
     {
-        _moveSpeed += _value;
+        moveSpeed += _value;
     }
 
     public void FreezePlayerControl()
     {
         freezeMovement = true;
-        rigdbody.velocity = Vector2.zero;
+        playerRigidbody.velocity = Vector2.zero;
     }
 
     public void SetNearInventory(bool _state)

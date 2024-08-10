@@ -1,84 +1,75 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class UI : MonoBehaviour
 {
-    [SerializeField] TextMeshProUGUI _foodCount;
-    [SerializeField] TextMeshProUGUI _endGameMessage;
-    [SerializeField] PlayerInventory _currentPlayerInventory;
-    [SerializeField] PickUpHandler _pickUpHandler;
-    [SerializeField] Image _firstKey;
-    [SerializeField] Image _secondKey;
-    [SerializeField] Image _thirdKey;
-    [SerializeField] Sprite _defaultKeySprite;
-    [SerializeField] EndGame _endGame;
-    private int keySlot = 0;
+    [FormerlySerializedAs("_foodCount")] [SerializeField] TextMeshProUGUI foodCount;
+    [FormerlySerializedAs("_endGameMessage")] [SerializeField] TextMeshProUGUI endGameMessage;
+    [FormerlySerializedAs("_currentPlayerInventory")] [SerializeField] PlayerInventory currentPlayerInventory;
+    [FormerlySerializedAs("_pickUpHandler")] [SerializeField] PickUpHandler pickUpHandler;
+    [FormerlySerializedAs("_firstKey")] [SerializeField] Image firstKey;
+    [FormerlySerializedAs("_secondKey")] [SerializeField] Image secondKey;
+    [FormerlySerializedAs("_thirdKey")] [SerializeField] Image thirdKey;
+    [FormerlySerializedAs("_defaultKeySprite")] [SerializeField] Sprite defaultKeySprite;
+    [FormerlySerializedAs("_endGame")] [SerializeField] EndGame endGame;
+    int keySlot;
     void Update()
     {
-        _foodCount.text = _currentPlayerInventory.CurrentFoodCount.ToString();
-    }
-    private void Awake()
-    {
-        _endGame.OnEndGame += PrintEndGame;
-        _endGame.OnKillPlayer += PrintDeathScreen;
-        _pickUpHandler.OnKeyPickup += UpdateKeyUI;
+        foodCount.text = currentPlayerInventory.CurrentFoodCount.ToString();
     }
 
-    private void PrintDeathScreen()
+    void Awake()
     {
-        _endGameMessage.text = "You died!";
+        endGame.OnEndGame += PrintEndGame;
+        endGame.OnKillPlayer += PrintDeathScreen;
+        pickUpHandler.OnKeyPickup += UpdateKeyUI;
     }
 
-    private void UpdateKeyUI(int _keyID)
+    void PrintDeathScreen()
+    {
+        endGameMessage.text = "You died!";
+    }
+
+    void UpdateKeyUI(int _keyID)
     {
         keySlot++;
         switch (CheckFreeUIKeySlot())
         {
             case 1:
-                _firstKey.sprite = _defaultKeySprite;
-                _firstKey.color = GetPickedUpKeyColor(_keyID);
+                firstKey.sprite = defaultKeySprite;
+                firstKey.color = GetPickedUpKeyColor(_keyID);
                 break;
             case 2:
-                _secondKey.sprite = _defaultKeySprite;
-                _secondKey.color = GetPickedUpKeyColor(_keyID);
+                secondKey.sprite = defaultKeySprite;
+                secondKey.color = GetPickedUpKeyColor(_keyID);
                 break;
             case 3:
-                _thirdKey.sprite = _defaultKeySprite;
-                _thirdKey.color = GetPickedUpKeyColor(_keyID);
-                break;
-            default:
+                thirdKey.sprite = defaultKeySprite;
+                thirdKey.color = GetPickedUpKeyColor(_keyID);
                 break;
         }
     }
 
-    private int CheckFreeUIKeySlot()
+    int CheckFreeUIKeySlot()
     {
-        if (keySlot <= 3)
+        return keySlot <= 3 ? keySlot : 0;
+    }
+
+    Color GetPickedUpKeyColor(int _keyID)
+    {
+        return _keyID switch
         {
-            return keySlot;
-        }
-        return 0;
+            1 => Color.red,
+            2 => Color.green,
+            3 => Color.blue,
+            _ => Color.clear
+        };
     }
 
-    private Color GetPickedUpKeyColor(int _keyID)
+    void PrintEndGame()
     {
-        switch (_keyID)
-        {
-            case 1:
-                return Color.red;
-            case 2:
-                return Color.green;
-            case 3:
-                return Color.blue;
-            default:
-                break;
-        }
-        return Color.clear;
-    }
-
-    private void PrintEndGame()
-    {
-        _endGameMessage.text = "You won!";
+        endGameMessage.text = "You won!";
     }
 }

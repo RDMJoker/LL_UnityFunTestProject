@@ -1,43 +1,37 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PlayerInventory : MonoBehaviour
 {
-    protected List<int> inventory;
-    private int currentFoodCount = 0;
-    public int CurrentFoodCount => currentFoodCount;
-    private void Awake()
+    List<int> inventory;
+    public int CurrentFoodCount { get; private set; }
+
+    void Awake()
     {
         inventory = new List<int>();
     }
-
-    public void RecieveItems(List<int> _returnList)
+    
+    public void ReceiveItems(List<int> _returnList)
     {
-        currentFoodCount = 0;
-        this.inventory.AddRange(_returnList);
-        foreach (int item in inventory)
+        CurrentFoodCount = 0;
+        inventory.AddRange(_returnList);
+        foreach (int item in inventory.Where(_item => _item == 1))
         {
-            if (item == 1)
-            {
-                Debug.Log("This is food!");
-                currentFoodCount++;
-            }
+            Debug.Log("This is food!");
+            CurrentFoodCount++;
         }
-
     }
 
     public bool EatFood()
     {
-        foreach (int item in inventory)
+        foreach (int item in inventory.Where(_item => _item == 1))
         {
-            if (item == 1)
-            {
-                this.inventory.Remove(item);
-                this.GetComponent<PlayerMovementTopDown>().IncreaseMoveSpeed(1);
-                currentFoodCount--;
-                Debug.Log("You ate food!");
-                return true;
-            }
+            inventory.Remove(item);
+            GetComponent<PlayerMovementTopDown>().IncreaseMoveSpeed(1);
+            CurrentFoodCount--;
+            Debug.Log("You ate food!");
+            return true;
         }
         return false;
     }

@@ -1,36 +1,51 @@
 using System;
+using System.Collections;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class EndGame : MonoBehaviour
 {
     public Action OnEndGame;
     public Action OnKillPlayer;
-    [SerializeField] EnemyMovement _enemyClass;
-    [SerializeField] EnemyMovement _enemyClass2;
+    [FormerlySerializedAs("_enemyClass")] [SerializeField] EnemyMovement enemyClass;
+    [FormerlySerializedAs("_enemyClass2")] [SerializeField] EnemyMovement enemyClass2;
 
-    private void Awake()
+    void Awake()
     {
-        _enemyClass.OnCollideWithPlayer += KillPlayer;
-        _enemyClass2.OnCollideWithPlayer += KillPlayer;
+        enemyClass.OnCollideWithPlayer += KillPlayer;
+        enemyClass2.OnCollideWithPlayer += KillPlayer;
     }
 
-    private void KillPlayer(GameObject _player)
+    void KillPlayer(GameObject _player)
     {
         FreezePlayerMovement(_player);
+        enemyClass.FreezeEnemies();
+        enemyClass2.FreezeEnemies();
         OnKillPlayer.Invoke();
+        StartCoroutine(StartEndTimer());
     }
 
-    public void EndGameTrigger(GameObject _player)
-    {
-        FreezePlayerMovement(_player);
-        _enemyClass.FreezeEnemies();
-        _enemyClass2.FreezeEnemies();
-        OnEndGame.Invoke();
-    }
-
-    private static void FreezePlayerMovement(GameObject _player)
+    static void FreezePlayerMovement(GameObject _player)
     {
         var playerMovementController = _player.GetComponent<PlayerMovementTopDown>();
         playerMovementController.FreezePlayerControl();
+    }
+
+    void OnTriggerEnter2D(Collider2D _player)
+    {
+        FreezePlayerMovement(_player.gameObject);
+        enemyClass.FreezeEnemies();
+        enemyClass2.FreezeEnemies();
+        OnEndGame.Invoke();
+        StartCoroutine(StartEndTimer());
+    }
+
+    IEnumerator StartEndTimer()
+    {
+        yield return new WaitForSeconds(2);
+#if UNITY_EDITOR
+        EditorApplication.ExitPlaymode();
+#endif
     }
 }
